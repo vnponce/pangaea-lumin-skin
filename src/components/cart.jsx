@@ -12,6 +12,7 @@ const propTypes = {
     image_url: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
   })),
+  setCart: PropTypes.func.isRequired,
   isLoading: PropTypes.bool,
   error: PropTypes.any,
   showPanel: PropTypes.bool.isRequired,
@@ -40,7 +41,7 @@ const PanelWrapper = styled.div`
   `};
 `;
 
-const Cart = ({ currencies, isLoading, error, cart, showPanel, setShowPanel }) => {
+const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowPanel }) => {
   const [subtotal, setSubtotal] = useState(0);
   useEffect(() => {
     if(cart && cart.length > 0) {
@@ -52,6 +53,18 @@ const Cart = ({ currencies, isLoading, error, cart, showPanel, setShowPanel }) =
   if(isLoading) return 'loading';
   if(error) return error;
   // Css to show -> cd-panel--is-visible;
+
+  const addItem = id => {
+    const product = cart.filter(currentProduct => currentProduct.id === id)[0];
+    const newCart = cart.filter(currentProduct => currentProduct.id !== id);
+    setCart([
+      ...newCart,
+      {
+        ...product,
+        qty: product.qty + 1,
+      },
+    ]);
+  };
 
   return (
     <PanelWrapper show={showPanel} className="cd-panel cd-panel--from-right js-cd-panel-main">
@@ -77,8 +90,8 @@ const Cart = ({ currencies, isLoading, error, cart, showPanel, setShowPanel }) =
                     <div className="flex flex-1">
                         <span className="border border-2 px-3 py-2">
                           <span className="pr-5 cursor-pointer">-</span>
-                          1
-                          <span className="pl-5 cursor-pointer">+</span>
+                          <span className="qty">{product.qty}</span>
+                          <span className="add-item pl-5 cursor-pointer" onClick={() => addItem(product.id)}>+</span>
                         </span>
                       <span className="price text-base flex-1 flex items-center justify-center">${product.price.toFixed(2)}</span>
                     </div>

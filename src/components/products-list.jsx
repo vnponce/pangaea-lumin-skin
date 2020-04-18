@@ -29,12 +29,13 @@ const ProductsList = ({ products, isLoading, error, setShowPanel, cart, setCart 
   if(isLoading) return 'loading';
   if(error) return error;
   const addToCart = id => {
-    console.log('product id =>', id);
-    console.table(products[id]);
     setCart([
       ...cart,
-      products[id],
-  ]);
+      {
+        ...products[id],
+        qty: 1,
+      },
+    ]);
     setShowPanel(true);
   };
   return (

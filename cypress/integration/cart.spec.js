@@ -47,4 +47,17 @@ context('Cart panel behavior', () => {
       cy.get('.panel .subtotal').should('contain', '$45.00');
     });
   })
+
+  describe('Qty behavior', () => {
+    beforeEach(() => {
+      cy.get('.product:first-child button').click();
+    });
+    it.only('should add 1 item whe click + button in qty controller', function () {
+      cy.get('.cart-product:first-child').within(() => {
+        cy.get('.qty').should('contain', 1);
+        cy.get('.add-item').click();
+        cy.get('.qty').should('contain', 2);
+      });
+    });
+  });
 });

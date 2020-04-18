@@ -91,7 +91,7 @@ function App() {
         <ProductsList products={data && data.products} isLoading={loading} error={error} setShowPanel={setShowPanel} cart={cart} setCart={setCart} />
       </main>
       {/* panel */}
-      <Cart currencies={currencyData && currencyData.currency} isLoading={currencyLoading} error={currencyError} cart={cart} showPanel={shoPanel} setShowPanel={setShowPanel}/>
+      <Cart currencies={currencyData && currencyData.currency} isLoading={currencyLoading} error={currencyError} cart={cart} setCart={setCart} showPanel={shoPanel} setShowPanel={setShowPanel} />
     </>
   );
 }
