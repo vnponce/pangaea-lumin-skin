@@ -3,6 +3,7 @@ import './App.css';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import ProductList from './components/product-list';
+import Cart from "./components/cart";
 
 const GET_PRODUCTS = gql`
   {
@@ -26,8 +27,7 @@ const GET_CURRENCIES = gql`
 function App() {
   const { loading = true, error, data } = useQuery(GET_PRODUCTS);
   const { currencyLoading, currencyError, data: currencyData } = useQuery(GET_CURRENCIES);
-  console.log('data =>', data);
-  console.log('currency =>', currencyData);
+  const cart = [];
   return (
     <>
       {/* Header */}
@@ -90,63 +90,7 @@ function App() {
         <ProductList products={data && data.products} isLoading={loading} error={error}/>
       </main>
       {/* panel */}
-      <button className="btn btn--primary" aria-controls="drawer1">Show Drawer Panel</button>
-
-      <div className="cd-panel cd-panel--from-right js-cd-panel-main cd-panel--is-visible">
-        <div className="cd-panel__container bg-gray-200 w-full md:w-1/2 p-6">
-          <div className="cd-panel__content flex flex-col h-full">
-            {/*  your side panel content here */}
-            <header className= "">
-              <button className="">X</button>
-              <span className="uppercase">your cart</span>
-              <select className="form-select w-1/5 h-8 block mt-1 bg-white border-2 mb-6">
-                {currencyData && currencyData.currency.map(currency => <option key={currency} value={currency}>{currency}</option>)}
-              </select>
-            </header>
-            <section className="overflow-hidden overflow-y-scroll flex-1">
-              {data && data.products.slice(0, 5).map(product => {
-                return (
-                  <div id={product.id} key={product.id} className="flex w-full bg-white p-6 mb-6 relative">
-                    <div className="flex flex-col w-2/3">
-                      <div className="mb-12">
-                        <span>{product.title}</span>
-                        <span className="absolute float-right right-0 top-0 text-xs p-2 cursor-pointer">X</span>
-                      </div>
-                      <div className="flex flex-1">
-                        <span className="border border-2 px-3 py-2">
-                          <span className="pr-5 cursor-pointer">-</span>
-                          1
-                          <span className="pl-5 cursor-pointer">+</span>
-                        </span>
-                        <span className="text-base flex-1 flex items-center justify-center">${product.price.toFixed(2)}</span>
-                      </div>
-                    </div>
-                    <div className="flex w-1/3 items-center justify-center">
-                      <img src={product.image_url} alt={product.name} className="h-8 w-8"/>
-                    </div>
-                  </div>
-                )
-              })}
-            </section>
-            <div className="">
-              <hr className="border-1 my-4"/>
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span>$61.00</span>
-              </div>
-              <button className="uppercase w-full py-4 border border-1 bg-white mb-4 text-sm tracking-wider">
-                make this a subscription (save 20%)
-              </button>
-              <button className="uppercase w-full py-4 bg-green-900 text-white text-sm tracking-wider">
-                proced to checkout
-              </button>
-
-            </div>
-          </div>
-          {/* cd-panel__content */}
-        </div>
-        {/* cd-panel__container */}
-      </div>
+      <Cart currencies={currencyData && currencyData.currency} isLoading={currencyLoading} error={currencyError} cart={cart}/>
     </>
   );
 }
