@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
+import ProductList from './components/product-list';
 
 const GET_PRODUCTS = gql`
   {
@@ -23,10 +24,8 @@ const GET_CURRENCIES = gql`
  * @return {string}
  */
 function App() {
-  const { loading, error, data } = useQuery(GET_PRODUCTS);
+  const { loading = true, error, data } = useQuery(GET_PRODUCTS);
   const { currencyLoading, currencyError, data: currencyData } = useQuery(GET_CURRENCIES);
-  if(loading || currencyLoading) return 'Loading...';
-  if(error || currencyError) return 'Error...';
   console.log('data =>', data);
   console.log('currency =>', currencyData);
   return (
@@ -87,17 +86,8 @@ function App() {
         </select>
       </section>
       {/* Products list */}
-      <main className="bg-gray-400 p-10 flex flex-wrap">
-        {data.products.map(product => {
-          return (
-            <div id={product.id} key={product.id} className="flex flex-col w-1/2 md:w-1/3 items-center mb-20">
-              <img src={product.image_url} alt={product.name} className="h-32 w-32 mb-12"/>
-              <span>{product.title}</span>
-              <span className="text-lg cursor-pointer">From ${product.price.toFixed(2)}</span>
-              <button className="py-4 px-12 bg-green-700 text-white hover:bg-green-900">Add to cart</button>
-            </div>
-          )
-        })}
+      <main className="products bg-gray-400 p-10 flex flex-wrap">
+        <ProductList products={data && data.products} isLoading={loading} error={error}/>
       </main>
       {/* panel */}
       <button className="btn btn--primary" aria-controls="drawer1">Show Drawer Panel</button>
@@ -114,7 +104,7 @@ function App() {
               </select>
             </header>
             <section className="overflow-hidden overflow-y-scroll flex-1">
-              {data.products.slice(0, 5).map(product => {
+              {data && data.products.slice(0, 5).map(product => {
                 return (
                   <div id={product.id} key={product.id} className="flex w-full bg-white p-6 mb-6 relative">
                     <div className="flex flex-col w-2/3">
