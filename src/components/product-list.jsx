@@ -16,16 +16,25 @@ const defaultProps = {
   products: [],
 };
 
-const ProductList = ({ products, isLoading, error }) => {
+const ProductList = ({ products, isLoading, error, setShowPanel, cart, setCart }) => {
   if(isLoading) return 'loading';
   if(error) return error;
+  const addToCart = id => {
+    console.log('product id =>', id);
+    console.table(products[id]);
+    setCart([
+      ...cart,
+      products[id],
+  ]);
+    setShowPanel(true);
+  };
   return (
-    products.map(product => (
+    products.map((product, index) => (
           <div id={product.id} key={product.id} className="product flex flex-col w-1/2 md:w-1/3 items-center mb-20">
             <img src={product.image_url} alt={product.title} className="object-contain h-32 w-32 mb-12"/>
             <span className="title">{product.title}</span>
             <span className="price text-lg cursor-pointer">From ${product.price.toFixed(2)}</span>
-            <button className="py-4 px-12 bg-green-700 text-white hover:bg-green-900">Add to cart</button>
+            <button className="py-4 px-12 bg-green-700 text-white hover:bg-green-900" onClick={() => addToCart(index)}>Add to cart</button>
           </div>
         ))
   )

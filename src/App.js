@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
@@ -27,7 +27,8 @@ const GET_CURRENCIES = gql`
 function App() {
   const { loading = true, error, data } = useQuery(GET_PRODUCTS);
   const { currencyLoading, currencyError, data: currencyData } = useQuery(GET_CURRENCIES);
-  const cart = [];
+  const [shoPanel, setShowPanel] = useState(false);
+  const [cart, setCart] = useState([]);
   return (
     <>
       {/* Header */}
@@ -87,10 +88,10 @@ function App() {
       </section>
       {/* Products list */}
       <main className="products bg-gray-400 p-10 flex flex-wrap">
-        <ProductList products={data && data.products} isLoading={loading} error={error}/>
+        <ProductList products={data && data.products} isLoading={loading} error={error} setShowPanel={setShowPanel} cart={cart} setCart={setCart} />
       </main>
       {/* panel */}
-      <Cart currencies={currencyData && currencyData.currency} isLoading={currencyLoading} error={currencyError} cart={cart}/>
+      <Cart currencies={currencyData && currencyData.currency} isLoading={currencyLoading} error={currencyError} cart={cart} showPanel={shoPanel} setShowPanel={setShowPanel}/>
     </>
   );
 }
