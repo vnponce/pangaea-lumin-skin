@@ -14,6 +14,8 @@ const propTypes = {
   })),
   isLoading: PropTypes.bool,
   error: PropTypes.any,
+  showPanel: PropTypes.bool.isRequired,
+  setShowPanel: PropTypes.func.isRequired,
 };
 
 const defaultProps = {

@@ -10,13 +10,22 @@ const propTypes = {
   })),
   isLoading: PropTypes.bool.isRequired,
   error: PropTypes.any,
+  cart: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    image_url: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+  })),
+  setCart: PropTypes.func.isRequired,
+  setShowPanel: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {
   products: [],
+  cart: [],
 };
 
-const ProductList = ({ products, isLoading, error, setShowPanel, cart, setCart }) => {
+const ProductsList = ({ products, isLoading, error, setShowPanel, cart, setCart }) => {
   if(isLoading) return 'loading';
   if(error) return error;
   const addToCart = id => {
@@ -40,6 +49,6 @@ const ProductList = ({ products, isLoading, error, setShowPanel, cart, setCart }
   )
 };
 
-ProductList.prototype = propTypes;
-ProductList.defaultProps = defaultProps;
-export default ProductList;
+ProductsList.prototype = propTypes;
+ProductsList.defaultProps = defaultProps;
+export default ProductsList;

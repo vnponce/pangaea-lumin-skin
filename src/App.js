@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import { useQuery } from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
-import ProductList from './components/product-list';
+import ProductsList from './components/products-list';
 import Cart from "./components/cart";
 
 const GET_PRODUCTS = gql`
@@ -88,7 +88,7 @@ function App() {
       </section>
       {/* Products list */}
       <main className="products bg-gray-400 p-10 flex flex-wrap">
-        <ProductList products={data && data.products} isLoading={loading} error={error} setShowPanel={setShowPanel} cart={cart} setCart={setCart} />
+        <ProductsList products={data && data.products} isLoading={loading} error={error} setShowPanel={setShowPanel} cart={cart} setCart={setCart} />
       </main>
       {/* panel */}
       <Cart currencies={currencyData && currencyData.currency} isLoading={currencyLoading} error={currencyError} cart={cart} showPanel={shoPanel} setShowPanel={setShowPanel}/>

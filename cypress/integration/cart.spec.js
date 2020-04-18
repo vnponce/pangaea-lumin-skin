@@ -39,7 +39,7 @@ context('Cart panel behavior', () => {
       cy.get('.panel').should('be.not.visible');
     });
 
-    it.only('should sum price for each product', () => {
+    it('should sum price for each product', () => {
       cy.get('.product:first-child button').click();
       cy.get('.panel .close-icon').click();
       cy.get('.product:nth-child(2) button').click();
