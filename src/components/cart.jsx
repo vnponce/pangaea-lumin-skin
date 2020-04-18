@@ -68,13 +68,17 @@ const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowP
 
   const reduceItem = id => {
     const product = cart.filter(currentProduct => currentProduct.id === id)[0];
-    const newCart = cart.filter(currentProduct => currentProduct.id !== id);
+    let newCart = [
+      ...cart.filter(currentProduct => currentProduct.id !== id)
+    ];
+    if(product.qty > 1) {
+      newCart = [
+        ...newCart,
+        ...product,
+      ]
+    }
     setCart([
       ...newCart,
-      {
-        ...product,
-        qty: product.qty - 1,
-      },
     ]);
   };
 

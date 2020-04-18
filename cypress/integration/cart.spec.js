@@ -59,7 +59,7 @@ context('Cart panel behavior', () => {
         cy.get('.qty').should('contain', 2);
       });
     });
-    it.only('should decrease 1 item whe click - button in qty controller', function () {
+    it('should decrease 1 item whe click - button in qty controller', function () {
       cy.get('.cart-product:first-child').within(() => {
         cy.get('.qty').should('contain', 1);
         cy.get('.add-item').click();
@@ -67,6 +67,13 @@ context('Cart panel behavior', () => {
         cy.get('.reduce-item').click();
         cy.get('.qty').should('contain', 1);
       });
+    });
+    it.only('should remove item whe click - button in qty controller and qty becomes 0', function () {
+      cy.get('.cart-product:first-child').within(() => {
+        cy.get('.qty').should('contain', 1);
+        cy.get('.reduce-item').click();
+      });
+      cy.get('.cart-product').should('have.length', 0);
     });
   });
 });
