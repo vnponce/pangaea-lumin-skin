@@ -46,17 +46,26 @@ context('Cart panel behavior', () => {
       // $45.00 is a magic number. I dont like it, but at this moment I do not gave a GraphQL EP Mocked.
       cy.get('.panel .subtotal').should('contain', '$45.00');
     });
-  })
+  });
 
   describe('Qty behavior', () => {
     beforeEach(() => {
       cy.get('.product:first-child button').click();
     });
-    it.only('should add 1 item whe click + button in qty controller', function () {
+    it('should increase 1 item whe click + button in qty controller', function () {
       cy.get('.cart-product:first-child').within(() => {
         cy.get('.qty').should('contain', 1);
         cy.get('.add-item').click();
         cy.get('.qty').should('contain', 2);
+      });
+    });
+    it.only('should decrease 1 item whe click - button in qty controller', function () {
+      cy.get('.cart-product:first-child').within(() => {
+        cy.get('.qty').should('contain', 1);
+        cy.get('.add-item').click();
+        cy.get('.qty').should('contain', 2);
+        cy.get('.reduce-item').click();
+        cy.get('.qty').should('contain', 1);
       });
     });
   });
