@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 
@@ -39,6 +39,14 @@ const PanelWrapper = styled.div`
 `;
 
 const Cart = ({ currencies, isLoading, error, cart, showPanel, setShowPanel }) => {
+  const [subtotal, setSubtotal] = useState(0);
+  useEffect(() => {
+    if(cart && cart.length > 0) {
+      const subtotal = cart.reduce((current, product) => current + product.price, 0);
+      setSubtotal(subtotal);
+    }
+  }, [cart]);
+
   if(isLoading) return 'loading';
   if(error) return error;
   // Css to show -> cd-panel--is-visible;
@@ -84,7 +92,7 @@ const Cart = ({ currencies, isLoading, error, cart, showPanel, setShowPanel }) =
             <hr className="border-1 my-4"/>
             <div className="flex justify-between">
               <span>Subtotal</span>
-              <span>$61.00</span>
+              <span className="subtotal">${subtotal.toFixed(2)}</span>
             </div>
             <button className="uppercase w-full py-4 border border-1 bg-white mb-4 text-sm tracking-wider">
               make this a subscription (save 20%)

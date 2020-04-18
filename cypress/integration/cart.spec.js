@@ -12,12 +12,6 @@ context('Cart panel behavior', () => {
     price: 29,
   };
 
-  const secondItemData = {
-    title: 'Hydrating Mist Spray',
-    image_url: 'https://d1b929y2mmls08.cloudfront.net/luminskin/img/new-landing-page/face-mist.png',
-    price: 12,
-  };
-
   describe('Cart panel', () => {
     it('should be hidden when load page', () => {
       cy.get('.panel').should('be.not.visible');
@@ -44,5 +38,13 @@ context('Cart panel behavior', () => {
       cy.get('.panel .close-icon').click();
       cy.get('.panel').should('be.not.visible');
     });
+
+    it.only('should sum price for each product', () => {
+      cy.get('.product:first-child button').click();
+      cy.get('.panel .close-icon').click();
+      cy.get('.product:nth-child(2) button').click();
+      // $45.00 is a magic number. I dont like it, but at this moment I do not gave a GraphQL EP Mocked.
+      cy.get('.panel .subtotal').should('contain', '$45.00');
+    });
   })
-})
+});
