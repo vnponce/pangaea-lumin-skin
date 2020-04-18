@@ -49,7 +49,7 @@ const Cart = ({ currencies, isLoading, error, cart, showPanel, setShowPanel }) =
         <div className="cd-panel__content flex flex-col h-full">
           {/*  your side panel content here */}
           <header className= "">
-            <button className="">X</button>
+            <button className="close-icon" onClick={() => setShowPanel(false)}>X</button>
             <span className="uppercase">your cart</span>
             <select className="form-select w-1/5 h-8 block mt-1 bg-white border-2 mb-6">
               {currencies.map(currency => <option key={currency} value={currency}>{currency}</option>)}
