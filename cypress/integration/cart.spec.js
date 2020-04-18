@@ -39,6 +39,13 @@ context('Cart panel behavior', () => {
       cy.get('.panel').should('be.not.visible');
     });
 
+    it('should remove item when click X button', function () {
+      cy.get('.product:first-child button').click();
+      cy.get('.product:first-child button').click();
+      cy.get('.cart-product:first-child .remove-item').click();
+      cy.get('.cart-product').should('have.length', 0);
+    });
+
     it('should sum price for each product', () => {
       cy.get('.product:first-child button').click();
       cy.get('.panel .close-icon').click();
@@ -68,7 +75,7 @@ context('Cart panel behavior', () => {
         cy.get('.qty').should('contain', 1);
       });
     });
-    it.only('should remove item whe click - button in qty controller and qty becomes 0', function () {
+    it('should remove item whe click - button in qty controller and qty becomes 0', function () {
       cy.get('.cart-product:first-child').within(() => {
         cy.get('.qty').should('contain', 1);
         cy.get('.reduce-item').click();

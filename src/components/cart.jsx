@@ -68,20 +68,24 @@ const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowP
 
   const reduceItem = id => {
     const product = cart.filter(currentProduct => currentProduct.id === id)[0];
-    let newCart = [
-      ...cart.filter(currentProduct => currentProduct.id !== id)
-    ];
-    if(product.qty > 1) {
-      newCart = [
-        ...newCart,
-        ...product,
-      ]
+    let newCart = cart.filter(currentProduct => currentProduct.id !== id);
+    if (product.qty <= 1) {
+      removeItem(id);
+      return false;
     }
     setCart([
       ...newCart,
+      {
+        ...product,
+        qty: product.qty - 1,
+      },
     ]);
   };
 
+  const removeItem = id => {
+    const newCart = cart.filter(currentProduct => currentProduct.id !== id);
+    setCart(newCart)
+  };
   return (
     <PanelWrapper show={showPanel} className="cd-panel cd-panel--from-right js-cd-panel-main">
       <div className="panel cd-panel__container bg-gray-200 w-full md:w-1/2 p-6">
@@ -101,7 +105,7 @@ const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowP
                   <div className="flex flex-col w-2/3">
                     <div className="mb-12">
                       <span className="title">{product.title}</span>
-                      <span className="absolute float-right right-0 top-0 text-xs p-2 cursor-pointer">X</span>
+                      <span className="remove-item absolute float-right right-0 top-0 text-xs p-2 cursor-pointer" onClick={() => removeItem(product.id)}>X</span>
                     </div>
                     <div className="flex flex-1">
                         <span className="border border-2 px-3 py-2">
@@ -129,7 +133,7 @@ const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowP
               make this a subscription (save 20%)
             </button>
             <button className="uppercase w-full py-4 bg-green-900 text-white text-sm tracking-wider">
-              proced to checkout
+              proceed to checkout
             </button>
 
           </div>
