@@ -44,8 +44,9 @@ const PanelWrapper = styled.div`
 const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowPanel }) => {
   const [subtotal, setSubtotal] = useState(0);
   useEffect(() => {
+    setSubtotal(0);
     if(cart && cart.length > 0) {
-      const subtotal = cart.reduce((current, product) => current + product.price, 0);
+      const subtotal = cart.reduce((current, { price, qty }) => current + (price * qty), 0);
       setSubtotal(subtotal);
     }
   }, [cart]);

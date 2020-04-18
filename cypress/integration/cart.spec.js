@@ -45,14 +45,6 @@ context('Cart panel behavior', () => {
       cy.get('.cart-product:first-child .remove-item').click();
       cy.get('.cart-product').should('have.length', 0);
     });
-
-    it('should sum price for each product', () => {
-      cy.get('.product:first-child button').click();
-      cy.get('.panel .close-icon').click();
-      cy.get('.product:nth-child(2) button').click();
-      // $45.00 is a magic number. I dont like it, but at this moment I do not gave a GraphQL EP Mocked.
-      cy.get('.panel .subtotal').should('contain', '$45.00');
-    });
   });
 
   describe('Qty behavior', () => {
@@ -81,6 +73,34 @@ context('Cart panel behavior', () => {
         cy.get('.reduce-item').click();
       });
       cy.get('.cart-product').should('have.length', 0);
+    });
+  });
+
+  describe.only('Subtotal behavior', () => {
+    it('should sum price for each product', () => {
+      cy.get('.product:first-child button').click();
+      cy.get('.panel .close-icon').click();
+      cy.get('.product:nth-child(2) button').click();
+      // $45.00 is a magic number. I dont like it, but at this moment I do not gave a GraphQL EP Mocked.
+      cy.get('.panel .subtotal').should('contain', '$45.00');
+    });
+
+    it('should sum price for each product detecting qty', () => {
+      // first product price 29
+      // Second product price 16
+      // total = 2*29 + 16; = $74.00
+      cy.get('.product:first-child button').click(); // 29
+      cy.get('.cart-product .add-item').click(); // 29
+      cy.get('.panel .close-icon').click();
+      cy.get('.product:nth-child(2) button').click(); // 16
+      // $45.00 is a magic number. I dont like it, but at this moment I do not gave a GraphQL EP Mocked.
+      cy.get('.panel .subtotal').should('contain', '$74.00');
+    });
+
+    it.only('should return 0 when remove all products from cart', () => {
+      cy.get('.product:first-child button').click(); // 29
+      cy.get('.cart-product .remove-item').click(); // 29
+      cy.get('.panel .subtotal').should('contain', '$0.00');
     });
   });
 });
