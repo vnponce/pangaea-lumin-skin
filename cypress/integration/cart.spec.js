@@ -52,6 +52,11 @@ context('Cart panel behavior', () => {
       cy.get('.cart-product').should('have.length', 1);
     });
 
+    it.only('should show "There are no item in your cart" message when cart is empty', () => {
+      cy.get('.product:first-child button').click();
+      cy.get('.cart-product:first-child .remove-item').click();
+      cy.get('.panel').should('contain', 'There are no item in your cart');
+    });
   });
 
   describe('Qty control behavior', () => {

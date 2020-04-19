@@ -18,6 +18,7 @@ const defaultProps = {
 
 const Items = ({ cart, addItem, reduceItem, removeItem }) => (
   <section className="cart overflow-hidden overflow-y-scroll flex-1">
+    {cart.length === 0 && <span className="block w-full text-center">There are no item in your cart</span>}
     {cart.map(product => {
       return (
         <div id={product.id} key={product.id} className="cart-product flex w-full bg-white p-6 mb-6 relative">
