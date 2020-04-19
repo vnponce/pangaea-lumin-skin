@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import Header from "./panel/header";
 import Items from "./panel/items";
 import Footer from "./panel/footer";
-import { alterOneItem } from "../helpers";
+import { alterOneItem, syncCollectionsProperty } from "../helpers";
 import { productType, currencyType } from "../types";
 
 const propTypes = {
@@ -29,7 +29,6 @@ const defaultProps = {
 
 const PanelWrapper = styled.aside`
   .panel {
-    height: 100%;
     transition: transform 0.3s 0.3s;
     transform: translate3d(100%, 0, 0);
   }
@@ -61,13 +60,7 @@ const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowP
 
   useEffect(() => {
     if (products && products.length > 0){
-      const carUpdated = cart.map(product => {
-        const productUpdated = products.filter(current => current.id === product.id)[0];
-        return {
-          ...product,
-          price: productUpdated.price
-        }
-      });
+      const carUpdated = syncCollectionsProperty({ updatedCollection: products, oldCollection: cart, property: 'price' });
       setCart(carUpdated);
     }
   }, [products]);
@@ -93,17 +86,16 @@ const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowP
     const newCart = cart.filter(currentProduct => currentProduct.id !== id);
     setCart(newCart)
   };
+
   return (
     <PanelWrapper show={showPanel}>
-      <div className="panel fixed top-0 right-0 bg-gray-200 w-full md:w-1/2 p-6">
+      <div className="panel fixed h-full top-0 right-0 bg-gray-200 w-full md:w-1/2 p-6">
         <div className="flex flex-col h-full">
           <Header currencies={currencies} setShowPanel={setShowPanel} triggerGetProducts={triggerGetProducts} />
           <Items cart={cart} addItem={addItem} reduceItem={reduceItem} removeItem={removeItem} />
           <Footer subtotal={subtotal}/>
         </div>
-        {/* cd-panel__content */}
       </div>
-      {/* cd-panel__container */}
     </PanelWrapper>
   )
 };

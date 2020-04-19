@@ -23,4 +23,15 @@ export const addOrCreateItem = ({ collection, item }) => {
       qty: 1,
     }
   ];
-}
+};
+
+
+export const syncCollectionsProperty = ({ updatedCollection, oldCollection, property }) => {
+  return oldCollection.map(product => {
+    const productUpdated = updatedCollection.filter(current => current.id === product.id)[0];
+    return {
+      ...product,
+      [property]: productUpdated[property]
+    }
+  });
+};
