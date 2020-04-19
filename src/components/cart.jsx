@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 import Header from "./panel/header";
 import Items from "./panel/items";
 import Footer from "./panel/footer";
+import alterOneItem from "../helpers";
 
 const propTypes = {
   currencies: PropTypes.arrayOf(
@@ -91,32 +92,18 @@ const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowP
   if(error) return error;
   // Css to show -> cd-panel--is-visible;
 
-  const addItem = id => {
-    const product = cart.filter(currentProduct => currentProduct.id === id)[0];
-    const newCart = cart.filter(currentProduct => currentProduct.id !== id);
-    setCart([
-      ...newCart,
-      {
-        ...product,
-        qty: product.qty + 1,
-      },
-    ]);
+  const addItem = product => {
+    const cartUpdated = alterOneItem({ collection: cart, item: product, property: 'qty',  value: product.qty + 1 });
+    setCart(cartUpdated);
   };
 
-  const reduceItem = id => {
-    const product = cart.filter(currentProduct => currentProduct.id === id)[0];
-    let newCart = cart.filter(currentProduct => currentProduct.id !== id);
+  const reduceItem = product => {
     if (product.qty <= 1) {
-      removeItem(id);
+      removeItem(product.id);
       return false;
     }
-    setCart([
-      ...newCart,
-      {
-        ...product,
-        qty: product.qty - 1,
-      },
-    ]);
+    const cartUpdated = alterOneItem({ collection: cart, item: product, property: 'qty',  value: product.qty - 1 });
+    setCart(cartUpdated);
   };
 
   const removeItem = id => {

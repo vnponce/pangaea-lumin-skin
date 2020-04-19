@@ -29,9 +29,9 @@ const Items = ({ cart, addItem, reduceItem, removeItem }) => (
             </div>
             <div className="flex flex-1">
                       <span className="border border-2 px-3 py-2">
-                        <span className="reduce-item pr-5 cursor-pointer" onClick={() => reduceItem(product.id)}>-</span>
+                        <span className="reduce-item pr-5 cursor-pointer" onClick={() => reduceItem(product)}>-</span>
                         <span className="qty">{product.qty}</span>
-                        <span className="add-item pl-5 cursor-pointer" onClick={() => addItem(product.id)}>+</span>
+                        <span className="add-item pl-5 cursor-pointer" onClick={() => addItem(product)}>+</span>
                       </span>
               <span className="price text-base flex-1 flex items-center justify-center">${product.price.toFixed(2)}</span>
             </div>
