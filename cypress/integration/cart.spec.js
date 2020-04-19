@@ -39,7 +39,7 @@ context('Cart panel behavior', () => {
       cy.get('.panel').should('be.not.visible');
     });
 
-    it('should remove item when click X button', function () {
+    it('should remove item when click X button', () => {
       cy.get('.product:first-child button').click();
       cy.get('.product:first-child button').click();
       cy.get('.cart-product:first-child .remove-item').click();
@@ -47,7 +47,7 @@ context('Cart panel behavior', () => {
     });
   });
 
-  describe('Qty behavior', () => {
+  describe('Qty control behavior', () => {
     beforeEach(() => {
       cy.get('.product:first-child button').click();
     });
@@ -76,7 +76,7 @@ context('Cart panel behavior', () => {
     });
   });
 
-  describe.only('Subtotal behavior', () => {
+  describe('Subtotal behavior', () => {
     it('should sum price for each product', () => {
       cy.get('.product:first-child button').click();
       cy.get('.panel .close-icon').click();
@@ -97,7 +97,7 @@ context('Cart panel behavior', () => {
       cy.get('.panel .subtotal').should('contain', '$74.00');
     });
 
-    it.only('should return 0 when remove all products from cart', () => {
+    it('should return 0 when remove all products from cart', () => {
       cy.get('.product:first-child button').click(); // 29
       cy.get('.cart-product .remove-item').click(); // 29
       cy.get('.panel .subtotal').should('contain', '$0.00');

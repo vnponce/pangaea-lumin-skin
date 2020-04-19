@@ -12,16 +12,24 @@ const propTypes = {
     image_url: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
   })),
+  products: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    image_url: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+  })),
   setCart: PropTypes.func.isRequired,
   isLoading: PropTypes.bool,
   error: PropTypes.any,
   showPanel: PropTypes.bool.isRequired,
   setShowPanel: PropTypes.func.isRequired,
+  triggerGetProducts: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
   currencies: [],
   cart: [],
+  products: [],
   isLoading: false,
   error: false,
 };
@@ -41,7 +49,7 @@ const PanelWrapper = styled.div`
   `};
 `;
 
-const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowPanel }) => {
+const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowPanel, triggerGetProducts, products }) => {
   const [subtotal, setSubtotal] = useState(0);
   useEffect(() => {
     setSubtotal(0);
@@ -50,6 +58,18 @@ const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowP
       setSubtotal(subtotal);
     }
   }, [cart]);
+  useEffect(() => {
+    if (products && products.length > 0){
+      const carUpdated = cart.map(product => {
+        const productUpdated = products.filter(current => current.id === product.id)[0];
+        return {
+          ...product,
+          price: productUpdated.price
+        }
+      });
+      setCart(carUpdated);
+    }
+  }, [products]);
 
   if(isLoading) return 'loading';
   if(error) return error;
@@ -95,7 +115,7 @@ const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowP
           <header className= "">
             <button className="close-icon" onClick={() => setShowPanel(false)}>X</button>
             <span className="uppercase">your cart</span>
-            <select className="form-select w-1/5 h-8 block mt-1 bg-white border-2 mb-6">
+            <select className="currency form-select w-1/5 h-8 block mt-1 bg-white border-2 mb-6" onChange={e => triggerGetProducts(e.target.value)}>
               {currencies.map(currency => <option key={currency} value={currency}>{currency}</option>)}
             </select>
           </header>

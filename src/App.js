@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
-import { useQuery } from '@apollo/react-hooks';
+import {useLazyQuery, useQuery} from '@apollo/react-hooks';
 import { gql } from 'apollo-boost';
 import ProductsList from './components/products-list';
 import Cart from "./components/cart";
 
-const GET_PRODUCTS = gql`
-  {
+const GET_PRODUCTS = gql`  
+  query Products($currency: Currency!){
     products {
       id,
       title,
       image_url,
-      price(currency: USD)
-    }
-  }
+      price(currency: $currency)
+    } 
+  } 
 `;
 const GET_CURRENCIES = gql`
   {
@@ -25,10 +25,21 @@ const GET_CURRENCIES = gql`
  * @return {string}
  */
 function App() {
-  const { loading = true, error, data } = useQuery(GET_PRODUCTS);
+  const [getProducts, { loading = true, error, data }] = useLazyQuery(GET_PRODUCTS);
   const { currencyLoading, currencyError, data: currencyData } = useQuery(GET_CURRENCIES);
   const [shoPanel, setShowPanel] = useState(false);
   const [cart, setCart] = useState([]);
+
+  const triggerGetProducts = (currency = 'USD') => {
+    getProducts({
+      variables: { currency }
+    })
+  };
+
+  useEffect(() => {
+    triggerGetProducts();
+  }, []);
+
   return (
     <>
       {/* Header */}
@@ -91,7 +102,7 @@ function App() {
         <ProductsList products={data && data.products} isLoading={loading} error={error} setShowPanel={setShowPanel} cart={cart} setCart={setCart} />
       </main>
       {/* panel */}
-      <Cart currencies={currencyData && currencyData.currency} isLoading={currencyLoading} error={currencyError} cart={cart} setCart={setCart} showPanel={shoPanel} setShowPanel={setShowPanel} />
+      <Cart currencies={currencyData && currencyData.currency} isLoading={currencyLoading} error={currencyError} cart={cart} setCart={setCart} showPanel={shoPanel} setShowPanel={setShowPanel} triggerGetProducts={triggerGetProducts} products={data && data.products}/>
     </>
   );
 }
