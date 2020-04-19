@@ -1,33 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import { func, bool, any } from 'prop-types';
 import styled, { css } from 'styled-components';
 import Header from "./panel/header";
 import Items from "./panel/items";
 import Footer from "./panel/footer";
 import { alterOneItem } from "../helpers";
+import { productType, currencyType } from "../types";
 
 const propTypes = {
-  currencies: PropTypes.arrayOf(
-    PropTypes.string.isRequired,
-  ),
-  cart: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    image_url: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-  })),
-  products: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    image_url: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-  })),
-  setCart: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool,
-  error: PropTypes.any,
-  showPanel: PropTypes.bool.isRequired,
-  setShowPanel: PropTypes.func.isRequired,
-  triggerGetProducts: PropTypes.func.isRequired,
+  currencies: currencyType,
+  cart: productType,
+  products: productType,
+  setCart: func.isRequired,
+  isLoading: bool,
+  error: any,
+  showPanel: bool.isRequired,
+  setShowPanel: func.isRequired,
+  triggerGetProducts: func.isRequired,
 };
 
 const defaultProps = {
@@ -40,13 +29,8 @@ const defaultProps = {
 
 const PanelWrapper = styled.aside`
   .panel {
-    /*...*/
-    // position: fixed;
-    /* width: 90%; */
     height: 100%;
-    // top: 0;
     transition: transform 0.3s 0.3s;
-    // right: 0;
     transform: translate3d(100%, 0, 0);
   }
 
@@ -90,7 +74,6 @@ const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowP
 
   if(isLoading) return 'loading';
   if(error) return error;
-  // Css to show -> cd-panel--is-visible;
 
   const addItem = product => {
     const cartUpdated = alterOneItem({ collection: cart, item: product, property: 'qty',  value: product.qty + 1 });

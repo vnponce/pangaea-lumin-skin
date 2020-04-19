@@ -1,24 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { bool, any, func } from 'prop-types';
 import { addOrCreateItem } from "../helpers";
+import { productType } from "../types";
 
 const propTypes = {
-  products: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    image_url: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-  })),
-  isLoading: PropTypes.bool.isRequired,
-  error: PropTypes.any,
-  cart: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    image_url: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-  })),
-  setCart: PropTypes.func.isRequired,
-  setShowPanel: PropTypes.bool.isRequired,
+  products: productType,
+  isLoading: bool.isRequired,
+  error: any,
+  cart: productType,
+  setCart: func.isRequired,
+  setShowPanel: bool.isRequired,
 };
 
 const defaultProps = {

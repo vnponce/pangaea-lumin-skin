@@ -1,13 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { productType } from "../types";
 
 const propTypes = {
-  cart: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    image_url: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-  })),
+  cart: productType,
 };
 
 const defaultProps = {
@@ -37,16 +32,16 @@ const Nav = ({ cart }) => (
     {/* Menu */}
     <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
       <div className="text-sm lg:flex-grow">
-        <a href="#" className="block mt-4 lg:inline-block lg:mt-0 hover:text-gray-500 mr-4">
+        <a href="#/" className="block mt-4 lg:inline-block lg:mt-0 hover:text-gray-500 mr-4">
           Shop
         </a>
-        <a href="#" className="block mt-4 lg:inline-block lg:mt-0 hover:text-gray-500 mr-4">
+        <a href="#/" className="block mt-4 lg:inline-block lg:mt-0 hover:text-gray-500 mr-4">
           Learn
         </a>
       </div>
       {/* Right col */}
       <div className="flex">
-        <a href="#" className="block mt-4 lg:inline-block lg:mt-0 hover:text-gray-500 mr-4">
+        <a href="#/" className="block mt-4 lg:inline-block lg:mt-0 hover:text-gray-500 mr-4">
           Account
         </a>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-6 w-6 fill-current">
