@@ -29,22 +29,30 @@ const ProductsList = ({ products, isLoading, error, setShowPanel, cart, setCart 
   if(isLoading) return 'loading';
   if(error) return error;
   const addToCart = id => {
+    let qty = 1;
+    let newCart = cart;
+    const currentProduct = products.filter(product => product.id === id)[0];
+    const alreadyExist = cart.filter(product => product.id === id);
+    if(alreadyExist.length > 0) {
+      qty = alreadyExist[0].qty + 1;
+      newCart = cart.filter(product => product.id !== id);
+    }
     setCart([
-      ...cart,
+      ...newCart,
       {
-        ...products[id],
-        qty: 1,
+        ...currentProduct,
+        qty,
       },
     ]);
     setShowPanel(true);
   };
   return (
-    products.map((product, index) => (
+    products.map(product => (
           <div id={product.id} key={product.id} className="product flex flex-col w-1/2 md:w-1/3 items-center mb-20">
             <img src={product.image_url} alt={product.title} className="object-contain h-32 w-32 mb-12"/>
             <span className="title">{product.title}</span>
             <span className="price text-lg cursor-pointer">From ${product.price.toFixed(2)}</span>
-            <button className="py-4 px-12 bg-green-700 text-white hover:bg-green-900" onClick={() => addToCart(index)}>Add to cart</button>
+            <button className="py-4 px-12 bg-green-700 text-white hover:bg-green-900" onClick={() => addToCart(product.id)}>Add to cart</button>
           </div>
         ))
   )
