@@ -46,7 +46,7 @@ context('Cart panel behavior', () => {
       cy.get('.cart-product').should('have.length', 0);
     });
 
-    it.only('should add one item when click Add button from existed product in the cart', () => {
+    it('should add one item when click Add button from existed product in the cart', () => {
       cy.get('.product:first-child button').click();
       cy.get('.product:first-child button').click();
       cy.get('.cart-product').should('have.length', 1);
