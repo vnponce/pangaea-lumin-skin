@@ -27,9 +27,9 @@ const GET_CURRENCIES = gql`
  * @return {string}
  */
 function App() {
-  const [getProducts, { loading = true, error, data }] = useLazyQuery(GET_PRODUCTS);
-  const { currencyLoading, currencyError, data: currencyData } = useQuery(GET_CURRENCIES);
-  const [shoPanel, setShowPanel] = useState(false);
+  const [getProducts, { loading = true, error, data: { products } = [] }] = useLazyQuery(GET_PRODUCTS);
+  const { currencyLoading, currencyError, data: { currency } = [] } = useQuery(GET_CURRENCIES);
+  const [showPanel, setShowPanel] = useState(false);
   const [cart, setCart] = useState([]);
 
   const triggerGetProducts = (currency = 'USD') => {
@@ -53,11 +53,11 @@ function App() {
         <JumboTron />
         {/* Products list */}
         <section className="products bg-gray-400 p-10 flex flex-wrap">
-          <ProductsList products={data && data.products} isLoading={loading} error={error} setShowPanel={setShowPanel} cart={cart} setCart={setCart} />
+          <ProductsList products={products} isLoading={loading} error={error} setShowPanel={setShowPanel} cart={cart} setCart={setCart} />
         </section>
       </main>
       {/* panel */}
-      <Cart currencies={currencyData && currencyData.currency} isLoading={currencyLoading} error={currencyError} cart={cart} setCart={setCart} showPanel={shoPanel} setShowPanel={setShowPanel} triggerGetProducts={triggerGetProducts} products={data && data.products}/>
+      <Cart currencies={currency} isLoading={currencyLoading} error={currencyError} cart={cart} setCart={setCart} showPanel={showPanel} setShowPanel={setShowPanel} triggerGetProducts={triggerGetProducts} products={products}/>
     </>
   );
 }

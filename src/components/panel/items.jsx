@@ -1,16 +1,12 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { func } from 'prop-types';
+import { productType } from "../../types";
 
 const propTypes = {
-  cart: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    image_url: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-  })),
-  addItem: PropTypes.func.isRequired,
-  reduceItem: PropTypes.func.isRequired,
-  removeItem: PropTypes.func.isRequired,
+  cart: productType,
+  addItem: func.isRequired,
+  reduceItem: func.isRequired,
+  removeItem: func.isRequired,
 };
 const defaultProps = {
   cart: [],
