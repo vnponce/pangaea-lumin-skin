@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import Header from "./panel/header";
 import Items from "./panel/items";
 import Footer from "./panel/footer";
-import alterOneItem from "../helpers";
+import { alterOneItem } from "../helpers";
 
 const propTypes = {
   currencies: PropTypes.arrayOf(

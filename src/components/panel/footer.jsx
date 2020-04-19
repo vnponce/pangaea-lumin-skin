@@ -29,6 +29,6 @@ const Footer = ({ subtotal }) => {
 };
 
 Footer.propTypes = propTypes;
-Footer.defaultProps = propTypes;
+Footer.defaultProps = defaultProps;
 
 export default Footer;
