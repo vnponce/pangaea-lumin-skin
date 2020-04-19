@@ -2,6 +2,7 @@ import React from 'react';
 import { bool, any, func } from 'prop-types';
 import { addOrCreateItem } from "../helpers";
 import { productType } from "../types";
+import {MyContext} from "../App";
 
 const propTypes = {
   products: productType,
@@ -17,14 +18,18 @@ const defaultProps = {
   cart: [],
 };
 
-const ProductsList = ({ products, isLoading, error, setShowPanel, cart, setCart }) => {
-  if(isLoading) return 'loading';
+const ProductsList = ({ cart, setCart }) => {
+  const {cart: myCart, productsCollection: { products , isLoading, error }, dispatch } = React.useContext(MyContext);
+  if(isLoading) return 'Loading...';
   if(error) return error;
+
+  console.log('myCart =>', myCart);
+  console.log('myProducts =>', products);
 
   const addToCart = product => {
     const cartUpdated = addOrCreateItem({collection: cart, item: product });
     setCart(cartUpdated);
-    setShowPanel(true);
+    dispatch({ type: 'SHOW_PANEL' });
   };
 
   return (

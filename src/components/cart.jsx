@@ -6,6 +6,7 @@ import Items from "./panel/items";
 import Footer from "./panel/footer";
 import { alterOneItem, syncCollectionsProperty } from "../helpers";
 import { productType, currencyType } from "../types";
+import {MyContext} from "../App";
 
 const propTypes = {
   currencies: currencyType,
@@ -47,8 +48,9 @@ const PanelWrapper = styled.aside`
   `};
 `;
 
-const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowPanel, triggerGetProducts, products }) => {
+const Cart = ({ cart, setCart, triggerGetProducts }) => {
   const [subtotal, setSubtotal] = useState(0);
+  const {cart: myCart, products, showPanel } = React.useContext(MyContext);
 
   useEffect(() => {
     setSubtotal(0);
@@ -64,9 +66,6 @@ const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowP
       setCart(carUpdated);
     }
   }, [products]);
-
-  if(isLoading) return 'loading';
-  if(error) return error;
 
   const addItem = product => {
     const cartUpdated = alterOneItem({ collection: cart, item: product, property: 'qty',  value: product.qty + 1 });
@@ -91,7 +90,7 @@ const Cart = ({ currencies, isLoading, error, cart, setCart, showPanel, setShowP
     <PanelWrapper show={showPanel}>
       <div className="panel fixed h-full top-0 right-0 bg-gray-200 w-full md:w-1/2 p-6">
         <div className="flex flex-col h-full">
-          <Header currencies={currencies} setShowPanel={setShowPanel} triggerGetProducts={triggerGetProducts} />
+          <Header triggerGetProducts={triggerGetProducts} />
           <Items cart={cart} addItem={addItem} reduceItem={reduceItem} removeItem={removeItem} />
           <Footer subtotal={subtotal}/>
         </div>
