@@ -6,7 +6,7 @@ import ProductsList from './components/products-list';
 import Cart from "./components/cart";
 import Nav from "./components/nav";
 import JumboTron from "./components/jumbotron";
-import {addOrCreateItem, reduceItem, removeItem} from "./helpers";
+import {addOrCreateItem, reduceItem, removeItem, syncCollectionsProperty} from "./helpers";
 
 const GET_PRODUCTS = gql`  
   query Products($currency: Currency!){
@@ -43,6 +43,7 @@ const reducer = (state, action) => {
           products: action.payload,
           isLoading: false,
         },
+        cart: syncCollectionsProperty({ updatedCollection: action.payload, oldCollection: state.cart, property: 'price' })
       };
     case 'REQUEST_LOAD_CURRENCIES':
       return {

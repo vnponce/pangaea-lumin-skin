@@ -50,7 +50,7 @@ const PanelWrapper = styled.aside`
 
 const Cart = ({ _cart, setCart, triggerGetProducts }) => {
   const [subtotal, setSubtotal] = useState(0);
-  const { cart, productsCollection: { products }, showPanel } = React.useContext(MyContext);
+  const { cart, showPanel } = React.useContext(MyContext);
 
   useEffect(() => {
     setSubtotal(0);
@@ -59,32 +59,6 @@ const Cart = ({ _cart, setCart, triggerGetProducts }) => {
       setSubtotal(subtotal);
     }
   }, [cart]);
-
-  useEffect(() => {
-    if (products && products.length > 0){
-      const carUpdated = syncCollectionsProperty({ updatedCollection: products, oldCollection: cart, property: 'price' });
-      setCart(carUpdated);
-    }
-  }, [products]);
-
-  const addItem = product => {
-    const cartUpdated = alterOneItem({ collection: cart, item: product, property: 'qty',  value: product.qty + 1 });
-    setCart(cartUpdated);
-  };
-
-  const reduceItem = product => {
-    if (product.qty <= 1) {
-      removeItem(product.id);
-      return false;
-    }
-    const cartUpdated = alterOneItem({ collection: cart, item: product, property: 'qty',  value: product.qty - 1 });
-    setCart(cartUpdated);
-  };
-
-  const removeItem = id => {
-    const newCart = cart.filter(currentProduct => currentProduct.id !== id);
-    setCart(newCart)
-  };
 
   return (
     <PanelWrapper show={showPanel}>
