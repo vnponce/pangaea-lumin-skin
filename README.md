@@ -33,7 +33,7 @@ This project recreate product page and cart using a GraphQL API.
 Install the dependencies and devDependencies and start the server.
 
 ```sh
-$ cd lumin
+$ cd pangaea-lumin-skin
 $ npm install
 $ npm start
 ```
