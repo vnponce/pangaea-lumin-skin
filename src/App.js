@@ -25,6 +25,7 @@ const GET_CURRENCIES = gql`
 `;
 
 const reducer = (state, action) => {
+  let cart = [];
   switch (action.type) {
     case 'REQUEST_LOAD_PRODUCTS':
       return {
@@ -36,6 +37,7 @@ const reducer = (state, action) => {
         },
       };
     case 'SUCCESS_LOAD_PRODUCTS':
+      cart = syncCollectionsProperty({ updatedCollection: action.payload, oldCollection: state.cart, property: 'price' });
       return {
         ...state,
         productsCollection: {
@@ -43,7 +45,8 @@ const reducer = (state, action) => {
           products: action.payload,
           isLoading: false,
         },
-        cart: syncCollectionsProperty({ updatedCollection: action.payload, oldCollection: state.cart, property: 'price' })
+        cart,
+        subtotal: cart.reduce((current, { price, qty }) => current + (price * qty), 0),
       };
     case 'REQUEST_LOAD_CURRENCIES':
       return {
@@ -74,20 +77,26 @@ const reducer = (state, action) => {
         showPanel: false,
       };
     case 'ADD_TO_CART':
+      cart = addOrCreateItem({collection: state.cart, item: action.payload });
       return {
         ...state,
-        cart: addOrCreateItem({collection: state.cart, item: action.payload }),
+        cart,
         showPanel: true,
+        subtotal: cart.reduce((current, { price, qty }) => current + (price * qty), 0),
       };
     case 'REDUCE_TO_CART':
+      cart = reduceItem({collection: state.cart, item: action.payload });
       return {
         ...state,
-        cart: reduceItem({collection: state.cart, item: action.payload }),
+        cart,
+        subtotal: cart.reduce((current, { price, qty }) => current + (price * qty), 0),
       };
     case 'REMOVE_TO_CART':
+      cart = removeItem({collection: state.cart, id: action.payload });
       return {
         ...state,
-        cart: removeItem({collection: state.cart, id: action.payload }),
+        cart,
+        subtotal: cart.reduce((current, { price, qty }) => current + (price * qty), 0),
       };
     default:
       return state;
@@ -110,6 +119,7 @@ const MyProvider = ({ children }) => {
     },
     showPanel: false,
     cart: [],
+    subtotal: 0,
   });
 
   return <MyContext.Provider value={{...state, dispatch}}>{children}</MyContext.Provider>
@@ -173,7 +183,7 @@ function App() {
         </section>
       </main>
       {/* panel */}
-      <Cart cart={cart} setCart={setCart} triggerGetProducts={triggerGetProducts} />
+      <Cart triggerGetProducts={triggerGetProducts} />
     </>
   );
 }

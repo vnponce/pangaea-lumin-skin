@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {MyContext} from "../../App";
 
 const propTypes = {
   subtotal: PropTypes.number,
@@ -9,7 +10,9 @@ const defaultProps = {
   subtotal: 0,
 };
 
-const Footer = ({ subtotal }) => {
+const Footer = () => {
+  const { subtotal } = React.useContext(MyContext);
+
   return (
     <>
       <hr className="border-1 my-4"/>

@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { func, bool, any } from 'prop-types';
 import styled, { css } from 'styled-components';
 import Header from "./panel/header";
 import Items from "./panel/items";
 import Footer from "./panel/footer";
-import { alterOneItem, syncCollectionsProperty } from "../helpers";
 import { productType, currencyType } from "../types";
-import {MyContext} from "../App";
+import { MyContext } from "../App";
 
 const propTypes = {
   currencies: currencyType,
@@ -49,16 +48,7 @@ const PanelWrapper = styled.aside`
 `;
 
 const Cart = ({ _cart, setCart, triggerGetProducts }) => {
-  const [subtotal, setSubtotal] = useState(0);
-  const { cart, showPanel } = React.useContext(MyContext);
-
-  useEffect(() => {
-    setSubtotal(0);
-    if(cart && cart.length > 0) {
-      const subtotal = cart.reduce((current, { price, qty }) => current + (price * qty), 0);
-      setSubtotal(subtotal);
-    }
-  }, [cart]);
+  const { showPanel } = React.useContext(MyContext);
 
   return (
     <PanelWrapper show={showPanel}>
@@ -66,7 +56,7 @@ const Cart = ({ _cart, setCart, triggerGetProducts }) => {
         <div className="flex flex-col h-full">
           <Header triggerGetProducts={triggerGetProducts} />
           <Items />
-          <Footer subtotal={subtotal}/>
+          <Footer />
         </div>
       </div>
     </PanelWrapper>
