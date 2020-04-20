@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { MyContext } from "../store/context";
+import {SHOW_PANEL} from "../types/reducers";
 
 const propTypes = {};
 
@@ -10,7 +11,8 @@ const getQtyItems = cart => {
 };
 
 const Nav = () => {
-  const { cart } = useContext(MyContext);
+  const { cart, dispatch } = useContext(MyContext);
+  const showPanel = () => dispatch({ type: SHOW_PANEL });
   return (
     <nav className="flex items-center justify-between flex-wrap py-3 px-12 text-gray-800">
       {/* Name */}
@@ -42,11 +44,13 @@ const Nav = () => {
           <a href="#/" className="block mt-4 lg:inline-block lg:mt-0 hover:text-gray-500 mr-4">
             Account
           </a>
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-6 w-6 fill-current">
-            <path className="heroicon-ui"
-                  d="M17 16a3 3 0 1 1-2.83 2H9.83a3 3 0 1 1-5.62-.1A3 3 0 0 1 5 12V4H3a1 1 0 1 1 0-2h3a1 1 0 0 1 1 1v1h14a1 1 0 0 1 .9 1.45l-4 8a1 1 0 0 1-.9.55H5a1 1 0 0 0 0 2h12zM7 12h9.38l3-6H7v6zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-          </svg>
-          <span className="cart-icon-qty font-light text-xs mx-2">{getQtyItems(cart) || ''}</span>
+          <div className="cart-icon" onClick={showPanel}>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-6 w-6 fill-current">
+              <path className="heroicon-ui"
+                    d="M17 16a3 3 0 1 1-2.83 2H9.83a3 3 0 1 1-5.62-.1A3 3 0 0 1 5 12V4H3a1 1 0 1 1 0-2h3a1 1 0 0 1 1 1v1h14a1 1 0 0 1 .9 1.45l-4 8a1 1 0 0 1-.9.55H5a1 1 0 0 0 0 2h12zM7 12h9.38l3-6H7v6zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm10 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+            </svg>
+            <span className="cart-icon-qty font-light text-xs mx-2">{getQtyItems(cart) || ''}</span>
+          </div>
         </div>
       </div>
     </nav>

@@ -130,5 +130,10 @@ context('Cart panel behavior', () => {
       cy.get('.cart-product:first-child .remove-item').click();
       cy.get('.cart-icon-qty').should('contain', '');
     });
+
+    it('should show panel when click icon', () => {
+      cy.get('.cart-icon').click();
+      cy.get('.panel').should('be.visible');
+    });
   });
 });
