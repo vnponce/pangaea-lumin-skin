@@ -1,68 +1,61 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Pangaea FE Coding Challenge
 
-## Available Scripts
+This project recreate product page and cart using a GraphQL API. 
 
-In the project directory, you can run:
+## Tech implemented.
+  - Create react app
+  - React
+  - Apollo Client
+  - hooks (useContext, useReducer, useLazyQuery)
+  - Cypress, to get integration testing.
+  - Jest, to get unit testing for helpers functions.
+  - PropTypes
+  - TailwindCss
+  - Styled components
 
-### `npm start`
+## Product Page Reqiurements
 
-Runs the app in the development mode.<br />
+  - Should query from https://pangaea-interviews.now.sh/api/graphql, retrieve the products and display them in a grid. Feel free to use graphql client libraries such as Apollo Client
+  - Each item should display the image, title, price and a "Add to Cart" button.
+  - For screens wider than 768px, it should show grid of 3 items, for less than 768px wide it should show a grid of two wide.
+  - There is no need to implement the page navbar, or filter dropdown as shown in the screenshot .
+
+## Cart Reqiurements
+  - When a user clicks "Add to Cart" on an item it should open the cart sidebar and add the item in.
+  - If the item already exists it should increment the quantity.
+  - Clicking the + or - buttons will increase or descrease the quantity, if the quantity is 1 and the "-" button is pressed it should remove the item.
+  - In the top left there is a currency select, doing so should requery the GraphQL api with a new currency and update the prices.
+  - It should sum the items in the cart and display them in the correct selected currency.
+  - Ignore anything related to subscriptions
+
+### Installation
+
+Install the dependencies and devDependencies and start the server.
+
+```sh
+$ cd lumin
+$ npm install
+$ npm start
+```
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
 
-### `npm test`
+For Cypress testing
+```sh
+$ ./node_modules/.bin/cypress open
+```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+For Jest testing
+```sh
+$ npm run test
+```
 
-### `npm run build`
+### Todos
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+ - Write MORE Tests
+ - Set correct styles
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+License
+----
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+MIT
