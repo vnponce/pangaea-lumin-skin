@@ -36,6 +36,10 @@ export const removeItem = ({ collection, id }) => {
   return collection.filter(currentProduct => currentProduct.id !== id);
 };
 
+export const getSubtotal = ({ cart }) => {
+  return cart.reduce((current, { price, qty }) => current + (price * qty), 0);
+};
+
 export const syncCollectionsProperty = ({ updatedCollection, oldCollection, property }) => {
   return oldCollection.map(product => {
     const productUpdated = updatedCollection.filter(current => current.id === product.id)[0];

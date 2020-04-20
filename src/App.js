@@ -6,7 +6,7 @@ import ProductsList from './components/products-list';
 import Cart from "./components/cart";
 import Nav from "./components/nav";
 import JumboTron from "./components/jumbotron";
-import {addOrCreateItem, reduceItem, removeItem, syncCollectionsProperty} from "./helpers";
+import {addOrCreateItem, getSubtotal, reduceItem, removeItem, syncCollectionsProperty} from "./helpers";
 
 const GET_PRODUCTS = gql`  
   query Products($currency: Currency!){
@@ -46,7 +46,7 @@ const reducer = (state, action) => {
           isLoading: false,
         },
         cart,
-        subtotal: cart.reduce((current, { price, qty }) => current + (price * qty), 0),
+        subtotal: getSubtotal({ cart }),
       };
     case 'REQUEST_LOAD_CURRENCIES':
       return {
@@ -82,21 +82,21 @@ const reducer = (state, action) => {
         ...state,
         cart,
         showPanel: true,
-        subtotal: cart.reduce((current, { price, qty }) => current + (price * qty), 0),
+        subtotal: getSubtotal({ cart }),
       };
     case 'REDUCE_TO_CART':
       cart = reduceItem({collection: state.cart, item: action.payload });
       return {
         ...state,
         cart,
-        subtotal: cart.reduce((current, { price, qty }) => current + (price * qty), 0),
+        subtotal: getSubtotal({ cart }),
       };
     case 'REMOVE_TO_CART':
       cart = removeItem({collection: state.cart, id: action.payload });
       return {
         ...state,
         cart,
-        subtotal: cart.reduce((current, { price, qty }) => current + (price * qty), 0),
+        subtotal: getSubtotal({ cart }),
       };
     default:
       return state;
