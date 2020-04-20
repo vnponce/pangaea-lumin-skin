@@ -1,5 +1,5 @@
 import React from 'react';
-import { MyContext } from "../App";
+import { MyContext } from "../store/context";
 
 const propTypes = {};
 

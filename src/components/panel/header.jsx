@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-import PropTypes from "prop-types";
-import {MyContext} from "../../App";
+import { func } from "prop-types";
+import { MyContext } from "../../store/context";
 
 
 const proptypes = {
-  triggerGetProducts: PropTypes.func.isRequired,
+  triggerGetProducts: func.isRequired,
 };
 
 const defaultProps = {};

@@ -1,14 +1,9 @@
 import React, { useContext } from 'react';
-import { productType } from "../types";
-import { MyContext } from "../App";
+import { MyContext } from "../store/context";
 
-const propTypes = {
-  cart: productType,
-};
+const propTypes = {};
 
-const defaultProps = {
-  cart: [],
-};
+const defaultProps = {};
 
 const getQtyItems = cart => {
   return cart.reduce((current, product) => current + product.qty, 0);

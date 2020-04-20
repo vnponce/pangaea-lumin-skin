@@ -1,31 +1,13 @@
 import React from 'react';
-import { func, bool, any } from 'prop-types';
 import styled, { css } from 'styled-components';
 import Header from "./panel/header";
 import Items from "./panel/items";
 import Footer from "./panel/footer";
-import { productType, currencyType } from "../types";
-import { MyContext } from "../App";
+import { MyContext } from "../store/context";
 
-const propTypes = {
-  currencies: currencyType,
-  cart: productType,
-  products: productType,
-  setCart: func.isRequired,
-  isLoading: bool,
-  error: any,
-  showPanel: bool.isRequired,
-  setShowPanel: func.isRequired,
-  triggerGetProducts: func.isRequired,
-};
+const propTypes = {};
 
-const defaultProps = {
-  currencies: [],
-  cart: [],
-  products: [],
-  isLoading: false,
-  error: false,
-};
+const defaultProps = {};
 
 const PanelWrapper = styled.aside`
   .panel {

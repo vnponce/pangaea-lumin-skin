@@ -1,24 +1,21 @@
 import React, { useContext } from 'react';
-import { func } from 'prop-types';
-import { productType } from "../../types";
-import {MyContext} from "../../App";
-import {alterOneItem} from "../../helpers";
+import { MyContext } from "../../store/context";
+import {
+  ADD_TO_CART,
+  REDUCE_TO_CART,
+  REMOVE_TO_CART
+} from "../../types/reducers";
 
-const propTypes = {
-  cart: productType,
-  addItem: func.isRequired,
-  reduceItem: func.isRequired,
-  removeItem: func.isRequired,
-};
+const propTypes = {};
 const defaultProps = {
   cart: [],
 };
 
 const Items = () => {
   const { cart, dispatch } = useContext(MyContext);
-  const addItem = product => dispatch({ type: 'ADD_TO_CART', payload: product });
-  const reduceItem = product => dispatch({ type: 'REDUCE_TO_CART', payload: product });
-  const removeItem = product => dispatch({ type: 'REMOVE_TO_CART', payload: product });
+  const addItem = product => dispatch({ type: ADD_TO_CART, payload: product });
+  const reduceItem = product => dispatch({ type: REDUCE_TO_CART, payload: product });
+  const removeItem = product => dispatch({ type: REMOVE_TO_CART, payload: product });
   return (
     <section className="cart overflow-hidden overflow-y-scroll flex-1">
       {cart.length === 0 && <span className="block w-full text-center">There are no item in your cart</span>}

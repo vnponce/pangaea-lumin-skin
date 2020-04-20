@@ -1,14 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {MyContext} from "../../App";
+import { MyContext } from "../../store/context";
 
-const propTypes = {
-  subtotal: PropTypes.number,
-};
+const propTypes = {};
 
-const defaultProps = {
-  subtotal: 0,
-};
+const defaultProps = {};
 
 const Footer = () => {
   const { subtotal } = React.useContext(MyContext);
