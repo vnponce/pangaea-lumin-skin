@@ -13,6 +13,7 @@ const PanelWrapper = styled.aside`
   .panel {
     transition: transform 0.3s 0.3s;
     transform: translate3d(100%, 0, 0);
+    z-index: 100;
   }
 
   ${props => props.show && css`
@@ -27,6 +28,18 @@ const PanelWrapper = styled.aside`
       transform: translateY(0px);
     }
   `};
+  .overlay {
+    z-index: 10;
+    visibility: hidden;
+    transition: transform 0.3s 0.3s;
+    transform: translate3d(100%, 0, 0);
+    ${props => props.show && css`
+      visibility: visible;
+      transition-delay: 0s;
+      transition: transform 0.3s 0.3s;
+      transform: translateY(0px);
+    `};
+  }
 `;
 
 const Cart = ({ _cart, setCart, triggerGetProducts }) => {
@@ -34,6 +47,7 @@ const Cart = ({ _cart, setCart, triggerGetProducts }) => {
 
   return (
     <PanelWrapper show={showPanel}>
+      <div className="overlay top-0 bg-teal-400 h-full fixed overflow-x-hidden p-0 w-full opacity-25">.</div>
       <div className="panel fixed h-full top-0 right-0 bg-gray-200 w-full md:w-1/2 p-6">
         <div className="flex flex-col h-full">
           <Header triggerGetProducts={triggerGetProducts} />

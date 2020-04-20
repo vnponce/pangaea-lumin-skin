@@ -53,7 +53,7 @@ function App() {
   useEffect(() => {
     triggerGetProducts();
     getCurrencies();
-  });
+  }, []);
 
   useEffect(() => {
     if(productsLoading) {
