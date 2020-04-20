@@ -4,19 +4,13 @@ import {MyContext} from "../../App";
 
 
 const proptypes = {
-  currencies: PropTypes.arrayOf(
-    PropTypes.string.isRequired,
-  ),
-  setShowPanel: PropTypes.func.isRequired,
   triggerGetProducts: PropTypes.func.isRequired,
 };
 
-const defaultProps = {
-  currencies: []
-};
+const defaultProps = {};
 
 const Header = ({ triggerGetProducts })  => {
-  const { currency: currencies = [], dispatch } = useContext(MyContext);
+  const { currenciesCollection: { currencies }, dispatch } = useContext(MyContext);
   return (
     <header className= "">
       <button className="close-icon" onClick={() => dispatch({type: 'HIDE_PANEL'})} >X</button>
@@ -26,7 +20,7 @@ const Header = ({ triggerGetProducts })  => {
       </select>
     </header>
   );
-}
+};
 
 Header.prototype = proptypes;
 Header.defaultProps = defaultProps;

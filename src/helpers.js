@@ -25,6 +25,16 @@ export const addOrCreateItem = ({ collection, item }) => {
   ];
 };
 
+export const reduceItem = ({ collection, item})  => {
+  if (item.qty <= 1) {
+    return removeItem({ collection, id: item.id });
+  }
+  return alterOneItem({ collection, item, property: 'qty',  value: item.qty - 1 });
+};
+
+export const removeItem = ({ collection, id }) => {
+  return collection.filter(currentProduct => currentProduct.id !== id);
+};
 
 export const syncCollectionsProperty = ({ updatedCollection, oldCollection, property }) => {
   return oldCollection.map(product => {

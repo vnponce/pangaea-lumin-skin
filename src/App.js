@@ -6,6 +6,7 @@ import ProductsList from './components/products-list';
 import Cart from "./components/cart";
 import Nav from "./components/nav";
 import JumboTron from "./components/jumbotron";
+import {addOrCreateItem, reduceItem, removeItem} from "./helpers";
 
 const GET_PRODUCTS = gql`  
   query Products($currency: Currency!){
@@ -26,7 +27,6 @@ const GET_CURRENCIES = gql`
 const reducer = (state, action) => {
   switch (action.type) {
     case 'REQUEST_LOAD_PRODUCTS':
-      console.log('setProductsReducer action.payload =>', action.payload);
       return {
         ...state,
         productsCollection: {
@@ -36,7 +36,6 @@ const reducer = (state, action) => {
         },
       };
     case 'SUCCESS_LOAD_PRODUCTS':
-      console.log('setProductsReducer action.payload =>', action.payload);
       return {
         ...state,
         productsCollection: {
@@ -45,19 +44,23 @@ const reducer = (state, action) => {
           isLoading: false,
         },
       };
-    case 'ERROR_LOAD_PRODUCTS':
-      return {
-    ...state,
-        productsCollection: {
-          ...state.productsCollection,
-          error: action.payload,
-      },
-    };
-    case 'LOAD_CURRENCIES':
-      console.log('setProductsReducer action.payload currency =>', action.payload);
+    case 'REQUEST_LOAD_CURRENCIES':
       return {
         ...state,
-        currency: action.payload,
+        currenciesCollection: {
+          ...state.currenciesCollection,
+          currencies: [],
+          isLoading: true,
+        },
+      };
+    case 'SUCCESS_LOAD_CURRENCIES':
+      return {
+        ...state,
+        currenciesCollection: {
+          ...state.currenciesCollection,
+          currencies: action.payload,
+          isLoading: false,
+        },
       };
     case 'SHOW_PANEL':
       return {
@@ -69,6 +72,24 @@ const reducer = (state, action) => {
         ...state,
         showPanel: false,
       };
+    case 'ADD_TO_CART':
+      return {
+        ...state,
+        cart: addOrCreateItem({collection: state.cart, item: action.payload }),
+        showPanel: true,
+      };
+    case 'REDUCE_TO_CART':
+      return {
+        ...state,
+        cart: reduceItem({collection: state.cart, item: action.payload }),
+      };
+    case 'REMOVE_TO_CART':
+      return {
+        ...state,
+        cart: removeItem({collection: state.cart, id: action.payload }),
+      };
+    default:
+      return state;
   }
 };
 
@@ -81,28 +102,28 @@ const MyProvider = ({ children }) => {
       isLoading: true,
       error: false,
     },
-    products: [],
-    loading: false,
-    error: false,
-    currency: [],
+    currenciesCollection: {
+      currencies: [],
+      isLoading: true,
+      error: false,
+    },
     showPanel: false,
     cart: [],
   });
 
-//  const { products, cart, showPanel, currency, loading, productsCollection } = state;
-
-  return <MyContext.Provider value={{
-    ...state, dispatch
-  }}>{children}</MyContext.Provider>
+  return <MyContext.Provider value={{...state, dispatch}}>{children}</MyContext.Provider>
 };
 
 /**
  * @return {string}
  */
 function App() {
-  const [getProducts, { loading = true, error, data: { products } = [] }] = useLazyQuery(GET_PRODUCTS);
-  const [getCurrencies, { data: { currency } = [] }] = useLazyQuery(GET_CURRENCIES);
-  const [showPanel, setShowPanel] = useState(false);
+  const [getProducts,
+    { loading: productsLoading = true, error: productsError, data: { products } = [] }
+    ] = useLazyQuery(GET_PRODUCTS);
+  const [getCurrencies,
+    { loading: currenciesLoading = true, error: currenciesError, data: { currency } = [] }
+    ] = useLazyQuery(GET_CURRENCIES);
   const [cart, setCart] = useState([]);
   const { dispatch } = useContext(MyContext);
 
@@ -113,26 +134,29 @@ function App() {
   };
 
   useEffect(() => {
-    if(loading) {
+    if(productsLoading) {
       dispatch({ type: 'REQUEST_LOAD_PRODUCTS' });
     }
-    if (products && products.length > 0) {
+    if (!productsLoading && products && products.length > 0) {
       dispatch({type: 'SUCCESS_LOAD_PRODUCTS', payload: products});
     }
-  }, [products, loading]);
+  }, [products, productsLoading]);
 
   useEffect(() => {
-    if (currency && currency.length > 0) {
-      dispatch({type: 'LOAD_CURRENCIES', payload: currency});
+    if(currenciesLoading) {
+      dispatch({ type: 'REQUEST_LOAD_CURRENCIES' });
     }
-  }, [currency]);
+    if (!currenciesLoading && currency && currency.length > 0) {
+      dispatch({type: 'SUCCESS_LOAD_CURRENCIES', payload: currency});
+    }
+  }, [currency, currenciesLoading]);
 
   useEffect(() => {
     triggerGetProducts();
     getCurrencies();
   }, []);
 
-  if(error) return 'Error ' + error;
+  if(productsError || currenciesError) return 'Error...';
   return (
     <>
       {/* Header */}
@@ -144,7 +168,7 @@ function App() {
         <JumboTron />
         {/* Products list */}
         <section className="products bg-gray-400 p-10 flex flex-wrap">
-          <ProductsList isLoading={loading} error={error} cart={cart} setCart={setCart} />
+          <ProductsList />
         </section>
       </main>
       {/* panel */}

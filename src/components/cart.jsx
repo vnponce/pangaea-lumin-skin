@@ -48,9 +48,9 @@ const PanelWrapper = styled.aside`
   `};
 `;
 
-const Cart = ({ cart, setCart, triggerGetProducts }) => {
+const Cart = ({ _cart, setCart, triggerGetProducts }) => {
   const [subtotal, setSubtotal] = useState(0);
-  const {cart: myCart, products, showPanel } = React.useContext(MyContext);
+  const { cart, productsCollection: { products }, showPanel } = React.useContext(MyContext);
 
   useEffect(() => {
     setSubtotal(0);
@@ -91,7 +91,7 @@ const Cart = ({ cart, setCart, triggerGetProducts }) => {
       <div className="panel fixed h-full top-0 right-0 bg-gray-200 w-full md:w-1/2 p-6">
         <div className="flex flex-col h-full">
           <Header triggerGetProducts={triggerGetProducts} />
-          <Items cart={cart} addItem={addItem} reduceItem={reduceItem} removeItem={removeItem} />
+          <Items />
           <Footer subtotal={subtotal}/>
         </div>
       </div>
