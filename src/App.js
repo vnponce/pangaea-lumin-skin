@@ -135,7 +135,6 @@ function App() {
   const [getCurrencies,
     { loading: currenciesLoading = true, error: currenciesError, data: { currency } = [] }
     ] = useLazyQuery(GET_CURRENCIES);
-  const [cart, setCart] = useState([]);
   const { dispatch } = useContext(MyContext);
 
   const triggerGetProducts = (currency = 'USD') => {
@@ -172,7 +171,7 @@ function App() {
     <>
       {/* Header */}
       <header className="w-full border-b-2">
-        <Nav cart={cart}/>
+        <Nav />
       </header>
       {/* All products */}
       <main>

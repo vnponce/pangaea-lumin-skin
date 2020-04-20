@@ -115,4 +115,20 @@ context('Cart panel behavior', () => {
       cy.get('.panel .subtotal').should('contain', '$0.00');
     });
   });
+  describe('Nav icon', () => {
+    it('should not show number when start page', () => {
+      cy.get('.cart-icon-qty').should('contain', '');
+    });
+
+    it('should one item when select one product in the cart', () => {
+      cy.get('.product:first-child button').click();
+      cy.get('.cart-icon-qty').should('contain', 1);
+    });
+
+    it('should not show number when remove all items', () => {
+      cy.get('.product:first-child button').click();
+      cy.get('.cart-product:first-child .remove-item').click();
+      cy.get('.cart-icon-qty').should('contain', '');
+    });
+  });
 });
